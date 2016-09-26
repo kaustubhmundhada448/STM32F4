@@ -1,0 +1,36 @@
+
+#include "stm32_ub_fatfs.h"
+#include "stm32f4xx.h"
+
+void add_data(CHAR save_data);
+
+int main(void)
+{
+	  char data[2];
+	  int i=0;
+	  FIL myFile;
+
+	  SystemInit();
+	  UB_Fatfs_Init();
+
+	  while(!(UB_Fatfs_CheckMedia(MMC_0)==FATFS_OK));
+	  while(!(UB_Fatfs_Mount(MMC_0)==FATFS_OK));
+
+	  while(!(UB_Fatfs_OpenFile(&myFile, "0:/Test.txt", F_WR)==FATFS_OK));
+
+	  for(i=0;i<255;i++)
+		  {
+		  add_data((char)i);
+		  }
+
+	  while(!(UB_Fatfs_CloseFile(&myFile)==FATFS_OK));
+	  while(!(UB_Fatfs_UnMount(MMC_0)==FATFS_OK));
+  	  return(0);
+}
+
+void add_data(CHAR save_data)
+{
+	data[0]=(char)i;
+	data[1]='\0';
+	while(!UB_Fatfs_WriteString(&myFile,data)==FATFS_OK);
+}
